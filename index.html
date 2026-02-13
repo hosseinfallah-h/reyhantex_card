@@ -588,7 +588,7 @@
                     </span>
                 </a>
 
-                <!-- دکمه ذخیره مخاطب -->
+                <!-- دکمه ذخیره مخاطب - مشکل vCard رفع شد -->
                 <button id="saveContactBtn" class="action-btn btn-save-contact" style="cursor:pointer;">
                     <span class="btn-icon"><i data-lucide="user-plus" width="26" stroke-width="2"></i></span>
                     <span class="btn-content">
@@ -647,56 +647,33 @@
                 const container = document.getElementById('goldObjectsContainer');
                 if (!container) return;
 
-                // clear any existing particles
                 container.innerHTML = '';
 
-                // تعداد ذرات کاهش یافته برای کارایی بهتر روی موبایل (از 200 به 35)
-                // اما با افکت طلایی بهتر و متنوع‌تر
                 const particleCount = 35;
 
-                // آرایه‌ای برای نگهداری موقعیت‌های اولیه تصادفی (برای ظاهر شدن اولیه در سراسر صفحه)
-                const initialPositions = [];
-
-                // نیمی از ذرات موقعیت اولیه تصادفی می‌گیرند (برای چیدمان اولیه)
                 for (let i = 0; i < particleCount; i++) {
                     const particle = document.createElement('div');
                     particle.className = 'gold-object float-up';
 
-                    // سایز متنوع (کوچکتر برای کارایی)
-                    const size = Math.floor(Math.random() * 40 + 15); // 15-55px
+                    const size = Math.floor(Math.random() * 40 + 15);
                     particle.style.width = size + 'px';
                     particle.style.height = size + 'px';
 
-                    // موقعیت افقی تصادفی
                     const leftPos = Math.random() * 100;
                     particle.style.left = leftPos + '%';
 
-                    // تأخیر و مدت زمان متغیر
-                    const duration = Math.floor(Math.random() * 25 + 20); // 20-45s
-                    const delay = Math.random() * -20; // تأخیر منفی برای شروع از نقاط مختلف
+                    const duration = Math.floor(Math.random() * 25 + 20);
+                    const delay = Math.random() * -20;
 
-                    // استفاده از custom properties برای انیمیشن
                     particle.style.setProperty('--duration', duration + 's');
                     particle.style.setProperty('--delay', delay + 's');
 
-                    // برای 60 درصد ذرات، موقعیت عمودی اولیه تصادفی (نه از پایین) 
-                    // اینطوری هنگام باز شدن صفحه، ذرات در نقاط مختلف دیده می‌شوند
                     if (i < particleCount * 0.6) {
-                        // موقعیت عمودی تصادفی بین 10% تا 90% ارتفاع صفحه
-                        const randomTop = Math.random() * 80 + 10; // 10% تا 90%
+                        const randomTop = Math.random() * 80 + 10;
                         particle.style.top = randomTop + '%';
-                        // تنظیم opacity اولیه برای دیده شدن
                         particle.style.opacity = '0.3';
-                        // انیمیشن را با تأخیر منفی تنظیم می‌کنیم تا از جای درست شروع شود
-                        // اما چون نمی‌خواهیم حتماً انیمیشن از پایین شروع شود، از یک کلاس دیگر هم می‌توان استفاده کرد
-                        // راه حل: انیمیشن float-up را حذف کرده و یک انیمیشن ثابت یا بدون انیمیشن برای اینها بگذاریم؟
-                        // برای سادگی، همین انیمیشن را نگه می‌داریم ولی top اولیه را ست می‌کنیم و انیمیشن از همانجا ادامه می‌یابد.
-                    } else {
-                        // بقیه از پایین شروع می‌شوند (پیش‌فرض انیمیشن)
-                        // نیازی به تنظیم top نیست
                     }
 
-                    // تنوع رنگی (برخی درخشان‌تر)
                     if (i % 3 === 0) {
                         particle.style.background = 'radial-gradient(circle, rgba(255,215,100,0.9) 0%, rgba(200,168,78,0.2) 90%)';
                         particle.style.boxShadow = '0 0 25px rgba(255,215,100,0.5)';
@@ -709,16 +686,13 @@
                 }
             }
 
-            // فراخوانی ساخت ذرات
             createGoldObjects();
 
-            // 3. حذف هرگونه transform اضافی روی کارت
             const cardEl = document.getElementById('luxuryCard');
             if (cardEl) {
                 cardEl.style.transform = 'none';
             }
 
-            // 4. تابع کپی (اختیاری)
             window.copyToClipboard = function (text) {
                 navigator.clipboard.writeText(text).then(() => {
                     const toast = document.getElementById('regalToast');
@@ -731,7 +705,7 @@
                 });
             };
 
-            // 5. ذخیره مخاطب با vCard
+            // 5. ذخیره مخاطب با vCard (رفع مشکل فرمت)
             const saveBtn = document.getElementById('saveContactBtn');
             if (saveBtn) {
                 saveBtn.addEventListener('click', function (e) {
@@ -739,26 +713,29 @@
 
                     const fullName = 'ریحان تک';
                     const organization = 'ریحان تک · تولیدی منسوجات لوکس';
+                    // فقط دو شماره مورد نظر: +989121006895 (موبایل) و +982155150787 (دفتر)
                     const phone1 = '+989121006895';
                     const phone2 = '+982155150787';
                     const website = 'https://reyhantex.com';
                     const email = 'info@reyhantex.com';
                     const address = 'تهران، بازار بزرگ، بازار عباس آباد، پلاک 294';
 
-                    const vCardData = `BEGIN:VCARD
-VERSION:3.0
-FN:${fullName}
-ORG:${organization}
-TITLE:مدیریت آتلیه و بنیان‌گذار
-TEL;TYPE=WORK,VOICE:${phone1}
-TEL;TYPE=WORK,VOICE:${phone2}
-EMAIL;TYPE=WORK:${email}
-URL;TYPE=WORK:${website}
-ADR;TYPE=WORK:;;${address};;
-NOTE:کارت دیجیتال رسمی ریحان تک - منسوجات اشرافی - نسخه طلایی
-REV:${new Date().toISOString()}
-END:VCARD`;
+                    // درست کردن vCard ساده و بدون کاراکتر اضافی - فقط شماره‌های خواسته شده
+                    // حذف TYPE=WORK,VOICE که باعث خطا روی بعضی گوشی‌ها میشه
+                    // همچنین حذف فیلد TITLE و NOTE و EMAIL (اختیاری) برای اطمینان از عدم تداخل
+                    const vCardData =
+                        'BEGIN:VCARD\r\n' +
+                        'VERSION:3.0\r\n' +
+                        'FN:' + fullName + '\r\n' +
+                        'ORG:' + organization + '\r\n' +
+                        'TEL;CELL:' + phone1 + '\r\n' +        // فقط CELL برای موبایل
+                        'TEL;WORK:' + phone2 + '\r\n' +        // فقط WORK برای دفتر
+                        'EMAIL:' + email + '\r\n' +
+                        'URL:' + website + '\r\n' +
+                        'ADR:;;' + address + ';;;\r\n' +
+                        'END:VCARD';
 
+                    // استفاده از text/x-vCard یا text/vcard? text/vcard استانداردتره
                     const blob = new Blob([vCardData], { type: 'text/vcard' });
                     const url = URL.createObjectURL(blob);
 
@@ -772,13 +749,12 @@ END:VCARD`;
 
                     const toast = document.getElementById('regalToast');
                     const msgSpan = document.getElementById('toastMessage');
-                    if (msgSpan) msgSpan.innerText = '✨ ریحان‌تک اضافه شد ✨';
+                    if (msgSpan) msgSpan.innerText = '✨ ریحان‌تک به مخاطبین اضافه شد ✨';
                     toast.classList.add('show');
                     setTimeout(() => { toast.classList.remove('show'); }, 3000);
                 });
             }
 
-            // به‌روزرسانی آیکون‌ها
             setTimeout(() => { lucide.createIcons(); }, 20);
         })();
     </script>
