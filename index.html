@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>ریحان‌تک • کارت دیجیتال</title>
+
+    <!-- Vazirmatn font (فونت وزیرمتن) - خوش‌خوان و مدرن برای فارسی -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* ——————————————————— اولترا پریمیوم تم تاریک (منطبق با استایل مرجع) ——————————————————— */
+        :root {
+            --color-black-velvet: #0A0F0D;
+            --color-forest-deep: #0F2A24;
+            --color-jade-royal: #0A5950;
+            --color-jade-light: #1A7A6B;
+            --color-gold-aurum: #C8A84E;
+            --color-gold-bright: #E5C87B;
+            --color-gold-soft: #F3E7C0;
+            --color-pearl: #F5F0E6;
+            --color-charcoal: #1E2624;
+            --glass-bg: rgba(10, 25, 22, 0.6);
+            --glass-edge: rgba(200, 168, 78, 0.25);
+            --shadow-deep: 0 25px 50px -10px rgba(0, 0, 0, 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--color-black-velvet);
+            font-family: 'Vazirmatn', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+            color: white;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ——— پس زمینه لوکس ——— */
+        .bg-velvet {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 30%, #173E39 0%, #0B1E1B 60%, #030807 100%);
+            z-index: -3;
+        }
+
+        .ornamental-particles {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: radial-gradient(circle, rgba(200, 168, 78, 0.5) 0%, rgba(200, 168, 78, 0) 90%);
+            border-radius: 50%;
+            width: 6px;
+            height: 6px;
+            animation: levitate 22s infinite linear;
+            opacity: 0.2;
+        }
+
+        @keyframes levitate {
+            0% {
+                transform: translateY(110vh) scale(0.8);
+                opacity: 0;
+            }
+
+            40% {
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: translateY(-20vh) scale(1.8);
+                opacity: 0;
+            }
+        }
+
+        /* ——— صحنه کارت (بدون افکت چرخش) ——— */
+        .temple {
+            width: 100%;
+            max-width: 490px;
+            /* حذف perspective و preserve-3d برای غیرفعال‌سازی کامل تیلت */
+        }
+
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(18px) saturate(180%);
+            -webkit-backdrop-filter: blur(18px) saturate(180%);
+            border: 1px solid var(--glass-edge);
+            border-radius: 36px;
+            padding: 40px 28px;
+            /* ترنزیفورم حذف شد - کارت کاملاً ثابت */
+            box-shadow: var(--shadow-deep), 0 0 0 1px rgba(200, 168, 78, 0.1) inset;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* حاشیه طلایی مایع‌گون */
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            padding: 2px;
+            border-radius: 36px;
+            background: linear-gradient(145deg, rgba(200, 168, 78, 0.6), rgba(120, 90, 30, 0.1) 80%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        /* گوشه‌های شناور طلایی */
+        .corner {
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            border: 1.5px solid var(--color-gold-aurum);
+            filter: drop-shadow(0 0 6px rgba(200, 168, 78, 0.4));
+            opacity: 0.7;
+            transition: 0.3s;
+        }
+
+        .card:hover .corner {
+            opacity: 1;
+            border-width: 2px;
+        }
+
+        /* تنظیم گوشه‌ها برای راست‌چین */
+        .c-tl {
+            top: 12px;
+            right: 12px;
+            border-left: 0;
+            border-bottom: 0;
+            border-radius: 0 28px 0 0;
+        }
+
+        .c-tr {
+            top: 12px;
+            left: 12px;
+            border-right: 0;
+            border-bottom: 0;
+            border-radius: 28px 0 0 0;
+        }
+
+        .c-bl {
+            bottom: 12px;
+            right: 12px;
+            border-left: 0;
+            border-top: 0;
+            border-radius: 0 0 0 28px;
+        }
+
+        .c-br {
+            bottom: 12px;
+            left: 12px;
+            border-right: 0;
+            border-top: 0;
+            border-radius: 0 0 28px 0;
+        }
+
+        /* ——— نشان و هویت ——— */
+        .emblem {
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle, rgba(200, 168, 78, 0.18) 0%, transparent 75%);
+            border-radius: 50%;
+            /* حذف transform: translateZ */
+            border: 1px dashed rgba(200, 168, 78, 0.3);
+            animation: soft-glow 4s infinite alternate;
+            overflow: hidden;
+            /* اطمینان از دایره‌ای ماندن عکس */
+        }
+
+        @keyframes soft-glow {
+            0% {
+                border-color: rgba(200, 168, 78, 0.2);
+                box-shadow: 0 0 10px rgba(200, 168, 78, 0.1);
+            }
+
+            100% {
+                border-color: rgba(200, 168, 78, 0.6);
+                box-shadow: 0 0 26px rgba(200, 168, 78, 0.2);
+            }
+        }
+
+        /* استایل جدید برای تصویر لوگوی دایره‌ای و کاملاً جا افتاده */
+        .emblem img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* تصویر کل دایره را پر کند بدون کشیدگی */
+            border-radius: 50%;
+            display: block;
+            background-color: #0A2A24;
+            /* رنگ پس زمینه در صورت نبود تصویر */
+        }
+
+        h1 {
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 3.1rem;
+            font-weight: 800;
+            text-align: center;
+            background: linear-gradient(165deg, #FAF2D7 0%, #DABF7E 70%, #AE9046 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.3;
+            letter-spacing: 0px;
+            margin-bottom: 6px;
+            /* حذف transform: translateZ */
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+        }
+
+        .about-text {
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 350;
+            color: var(--color-gold-soft);
+            text-align: center;
+            max-width: 380px;
+            margin: 0 auto 22px auto;
+            line-height: 1.7;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px 22px;
+            border-radius: 40px;
+            backdrop-filter: blur(6px);
+            border: 0.5px solid rgba(200, 168, 78, 0.25);
+            /* حذف transform: translateZ */
+        }
+
+        .herald {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            margin-bottom: 32px;
+            /* حذف transform: translateZ */
+        }
+
+        .herald-line {
+            height: 1px;
+            width: 70px;
+            background: linear-gradient(90deg, transparent, var(--color-gold-aurum), transparent);
+        }
+
+        .herald-text {
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--color-gold-soft);
+            opacity: 0.9;
+        }
+
+        /* ——— دکمه‌های اصلی ——— */
+        .action-palette {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            /* حذف transform: translateZ */
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            background: rgba(15, 42, 36, 0.6);
+            border: 1px solid rgba(200, 168, 78, 0.15);
+            border-radius: 18px;
+            text-decoration: none;
+            color: var(--color-gold-bright);
+            backdrop-filter: blur(8px);
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            font-family: 'Vazirmatn', sans-serif;
+            cursor: pointer;
+            /* برای دکمه ذخیره */
+            width: 100%;
+            /* اطمینان از تمام عرض */
+            border: none;
+            /* برای دکمه ذخیره */
+            font-size: 1rem;
+            /* یکسان‌سازی فونت */
+        }
+
+        .action-btn:hover {
+            background: rgba(26, 122, 107, 0.5);
+            border-color: var(--color-gold-aurum);
+            transform: translateY(-3px) scale(1.01);
+            box-shadow: 0 12px 22px -6px black;
+        }
+
+        .btn-icon {
+            width: 44px;
+            height: 44px;
+            background: rgba(200, 168, 78, 0.12);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 18px;
+            margin-right: 0;
+            color: var(--color-gold-aurum);
+            transition: 0.2s;
+            flex-shrink: 0;
+        }
+
+        .action-btn:hover .btn-icon {
+            background: rgba(200, 168, 78, 0.25);
+        }
+
+        .btn-content {
+            text-align: right;
+        }
+
+        .btn-content h3 {
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        .btn-desc {
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #d4c9b2;
+            font-weight: 400;
+            font-family: 'Vazirmatn', sans-serif;
+        }
+
+        /* دکمه طلایی ذخیره */
+        .btn-save-contact {
+            background: linear-gradient(145deg, #C8A84E, #A6893A);
+            border: none;
+            color: #0A0F0D;
+            font-weight: 700;
+            margin-top: 8px;
+        }
+
+        .btn-save-contact .btn-icon {
+            background: rgba(0, 0, 0, 0.2);
+            color: #0A0F0D;
+        }
+
+        .btn-save-contact .btn-desc {
+            color: #1E2A24;
+            font-weight: 600;
+        }
+
+        .btn-save-contact h3 {
+            color: #0A1E1A;
+        }
+
+        /* ——— بخش اطلاعات ——— */
+        .insignia {
+            margin-top: 32px;
+            border-top: 1px solid rgba(200, 168, 78, 0.3);
+            padding-top: 24px;
+            /* حذف transform: translateZ */
+            position: relative;
+        }
+
+        .insignia::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 30%;
+            width: 40%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--color-gold-aurum), transparent);
+            opacity: 0.6;
+        }
+
+        .insignia-group {
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .insignia-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: var(--color-gold-aurum);
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 650;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+
+        .address-line {
+            font-size: 0.85rem;
+            color: #E0DDD1;
+            margin-bottom: 8px;
+            font-weight: 350;
+            padding: 0 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background: rgba(0, 0, 0, 0.1);
+            padding: 6px 14px;
+            border-radius: 40px;
+            backdrop-filter: blur(2px);
+            border: 0.3px solid rgba(200, 168, 78, 0.15);
+        }
+
+        .phone-chips {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* استایل لینک تلفن - کل منطقه کلیک پذیر است */
+        .phone-link {
+            text-decoration: none;
+            display: inline-block;
+            /* برای اینکه دور چیپ قرار گیرد */
+        }
+
+        .chip {
+            background: rgba(200, 168, 78, 0.08);
+            border: 0.5px solid rgba(200, 168, 78, 0.4);
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            backdrop-filter: blur(6px);
+            transition: 0.25s;
+            cursor: pointer;
+            color: #F0E5CE;
+            font-family: 'Vazirmatn', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            /* برای لینک داخل چیپ */
+        }
+
+        .chip:hover {
+            background: var(--color-gold-aurum);
+            color: #0A1E1A;
+            border-color: var(--color-gold-aurum);
+            font-weight: 600;
+            transform: scale(1.03);
+            box-shadow: 0 0 16px rgba(200, 168, 78, 0.5);
+        }
+
+        /* ——— توست ——— */
+        .toast-premium {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(120px);
+            background: var(--color-gold-aurum);
+            color: #0A1A16;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1);
+            z-index: 9999;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 1px solid #FFEFC0;
+            font-family: 'Vazirmatn', sans-serif;
+        }
+
+        .toast-premium.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        @media (max-width: 460px) {
+            .card {
+                padding: 30px 18px;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .about-text {
+                font-size: 0.8rem;
+                padding: 8px 16px;
+            }
+
+            .herald-text {
+                letter-spacing: 4px;
+            }
+
+            .corner {
+                width: 36px;
+                height: 36px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-velvet"></div>
+    <div class="ornamental-particles" id="particleCanvas"></div>
+
+    <div class="temple">
+        <div class="card" id="luxuryCard">
+
+            <!-- گوشه‌های طلایی -->
+            <div class="corner c-tl"></div>
+            <div class="corner c-tr"></div>
+            <div class="corner c-bl"></div>
+            <div class="corner c-br"></div>
+
+            <!-- نشان با تصویر دایره‌ای کامل -->
+            <div class="emblem">
+                <!-- با استفاده از لورم پیکسوم به عنوان placeholder تصویر. در عمل آدرس عکس شما قرار می‌گیرد -->
+                <img src="./reyhantex_logo.jpg" alt="reyhantex_logo">
+            </div>
+
+            <h1>ریحان‌تکس</h1>
+
+            <!-- توضیحات -->
+            <div class="about-text">
+                تولیدکننده انواع پارچه‌های گردبافت و تخت بافت با بهترین کیفیت و بالاترین تنوع
+            </div>
+
+            <div class="herald">
+                <span class="herald-line"></span>
+                <span class="herald-text">پارچه‌های ریحان تکس</span>
+                <span class="herald-line"></span>
+            </div>
+
+            <!-- دکمه‌های اصلی -->
+            <div class="action-palette">
+                <a href="https://reyhantex.com" class="action-btn" target="_blank">
+                    <span class="btn-icon"><i data-lucide="globe" width="22"></i></span>
+                    <span class="btn-content">
+                        <h3>وبسایت رسمی</h3>
+                        <span class="btn-desc">reyhantex.com</span>
+                    </span>
+                </a>
+                <a href="https://instagram.com/reyhantex" class="action-btn" target="_blank">
+                    <span class="btn-icon"><i data-lucide="instagram" width="22"></i></span>
+                    <span class="btn-content">
+                        <h3>اینستاگرام</h3>
+                        <span class="btn-desc">REYHANTEX@</span>
+                    </span>
+                </a>
+                <a href="https://t.me/reyhantex" class="action-btn" target="_blank">
+                    <span class="btn-icon"><i data-lucide="send" width="22"></i></span>
+                    <span class="btn-content">
+                        <h3>تلگرام</h3>
+                        <span class="btn-desc">کانال رسمی تلگرام بهمراه نمونه محصولات</span>
+                    </span>
+                </a>
+                <a href="https://wa.me/+989121006895" class="action-btn" target="_blank">
+                    <span class="btn-icon"><i data-lucide="message-circle" width="22"></i></span>
+                    <span class="btn-content">
+                        <h3>واتساپ</h3>
+                        <span class="btn-desc">راه ارتباطی با مدیریت</span>
+                    </span>
+                </a>
+
+                <!-- دکمه ذخیره مخاطب - کل دکمه کلیک‌پذیر است (با جاوااسکریپت) -->
+                <button id="saveContactBtn" class="action-btn btn-save-contact" style="cursor:pointer;">
+                    <span class="btn-icon"><i data-lucide="user-plus" width="26" stroke-width="2"></i></span>
+                    <span class="btn-content">
+                        <h3>ذخیره در مخاطب</h3>
+                        <span class="btn-desc">vCard · یک کلیک</span>
+                    </span>
+                </button>
+            </div>
+
+            <!-- بخش اطلاعات تماس با شماره‌های قابل کلیک (کل چیپ به عنوان لینک dialer) -->
+            <div class="insignia">
+                <div class="insignia-group">
+                    <div class="insignia-title">
+                        <i data-lucide="map-pin" size="16" stroke-width="2.2"></i> آتلیه و مراکز
+                    </div>
+                    <div class="address-line">🏛️ آدرس فروشگاه · تهران، بازار بزرگ، بازار عباس آباد، روبروی کوچه علی
+                        آبادی، پلاک 294</div>
+                    <div class="address-line">⚙️ آدرس شعبه مرکزی · تهران، بازار بزرگ، بازار عباس آباد، پایین تر از
+                        چهارسوق کوچک، دالان اول ملک، سرای عالی روشن پلاک 18</div>
+                    <div class="address-line">📦 آدرس دفتر · تهران، بازار بزرگ، بازار عباس آباد، انتهای کوچه درویش، سرای
+                        عالی نو، طبقه اول پلاک 10</div>
+                </div>
+                <div class="insignia-group">
+                    <div class="insignia-title">
+                        <i data-lucide="phone" size="16" stroke-width="2.2"></i> خطوط مستقیم
+                    </div>
+                    <div class="phone-chips">
+                        <!-- استفاده از <a> با کلاس phone-link تا کل چیپ کلیک‌پذیر باشد و دیالر باز شود (مشابه پروژه دیگر) -->
+                        <a href="tel:+989121006895" class="phone-link">
+                            <span class="chip">📱 6895 100 0912</span>
+                        </a>
+                        <a href="tel:+982155150787" class="phone-link">
+                            <span class="chip">📱 0787 5515 021</span>
+                        </a>
+                    </div>
+                    <p style="font-size: 0.7rem; margin-top: 18px; color: #AEA48C; letter-spacing: 2px;">⸻ کلیک روی
+                        شماره برای تماس مستقیم ⸻</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- توست -->
+    <div id="regalToast" class="toast-premium">
+        <i data-lucide="check-circle" width="20"></i> <span id="toastMessage">کپی شد</span>
+    </div>
+
+    <script>
+        (function () {
+            "use strict";
+
+            // 1. راه‌اندازی آیکون‌ها
+            lucide.createIcons();
+
+            // 2. ذرات طلایی پس زمینه (تعداد ۲۰۰ ذره)
+            function generateParticles() {
+                const container = document.getElementById('particleCanvas');
+                if (!container) return;
+                for (let i = 0; i < 200; i++) {
+                    const particle = document.createElement('span');
+                    particle.className = 'particle';
+
+                    const size = Math.floor(Math.random() * 18 + 3);
+                    particle.style.width = size + 'px';
+                    particle.style.height = size + 'px';
+
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDelay = Math.random() * 20 + 's';
+                    particle.style.animationDuration = Math.floor(Math.random() * 25 + 20) + 's';
+
+                    if (i % 4 === 0) {
+                        particle.style.background = 'radial-gradient(circle, rgba(255,215,100,0.9) 0%, rgba(200,168,78,0.3) 80%)';
+                        particle.style.boxShadow = '0 0 20px rgba(255,215,100,0.6)';
+                        particle.style.opacity = '0.5';
+                    } else if (i % 5 === 0) {
+                        particle.style.background = 'radial-gradient(circle, rgba(229,200,123,0.8) 0%, rgba(170,140,60,0.2) 90%)';
+                        particle.style.boxShadow = '0 0 15px rgba(229,200,123,0.5)';
+                    }
+
+                    container.appendChild(particle);
+                }
+            }
+            generateParticles();
+
+            // 3. افکت ۳ بعدی به طور کامل حذف شد (بدون ایونت لیسنر)
+            // فقط برای اطمینان هرگونه transform روی کارت حذف می‌شود
+            const cardEl = document.getElementById('luxuryCard');
+            if (cardEl) {
+                cardEl.style.transform = 'none';
+            }
+
+            // 4. تابع کپی (اختیاری)
+            window.copyToClipboard = function (text) {
+                navigator.clipboard.writeText(text).then(() => {
+                    const toast = document.getElementById('regalToast');
+                    const msgSpan = document.getElementById('toastMessage');
+                    if (msgSpan) msgSpan.innerText = `📋 کپی شد: ${text}`;
+                    toast.classList.add('show');
+                    setTimeout(() => { toast.classList.remove('show'); }, 2200);
+                }).catch(() => {
+                    alert('لطفاً دستی کپی کنید: ' + text);
+                });
+            };
+
+            // 5. ذخیره مخاطب با vCard (کل دکمه کار می‌کند چون button است)
+            const saveBtn = document.getElementById('saveContactBtn');
+            if (saveBtn) {
+                saveBtn.addEventListener('click', function (e) {
+                    e.preventDefault(); // برای button ضروری نیست ولی خوب است
+
+                    const fullName = 'ریحان تک';
+                    const organization = 'ریحان تک · تولیدی منسوجات لوکس';
+                    const phone1 = '+989121006895'; // اصلاح شده با شماره واقعی
+                    const phone2 = '+982155150787'; // شماره دوم به فرمت مناسب
+                    const website = 'https://reyhantex.com';
+                    const email = 'info@reyhantex.com';
+                    const address = 'تهران، بازار بزرگ، بازار عباس آباد، پلاک 294';
+
+                    const vCardData = `BEGIN:VCARD
+                    VERSION:3.0
+                    FN:${fullName}
+                    ORG:${organization}
+                    TITLE:مدیریت آتلیه و بنیان‌گذار
+                    TEL;TYPE=WORK,VOICE:${phone1}
+                    TEL;TYPE=WORK,VOICE:${phone2}
+                    EMAIL;TYPE=WORK:${email}
+                    URL;TYPE=WORK:${website}
+                    ADR;TYPE=WORK:;;${address};;
+                    NOTE:کارت دیجیتال رسمی ریحان تک - منسوجات اشرافی - نسخه طلایی
+                    REV:${new Date().toISOString()}
+                    END:VCARD`;
+
+                    const blob = new Blob([vCardData], { type: 'text/vcard' });
+                    const url = URL.createObjectURL(blob);
+
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'reyhantex_contact.vcf';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+
+                    const toast = document.getElementById('regalToast');
+                    const msgSpan = document.getElementById('toastMessage');
+                    if (msgSpan) msgSpan.innerText = '✨ ریحان‌تک اضافه شد ✨';
+                    toast.classList.add('show');
+                    setTimeout(() => { toast.classList.remove('show'); }, 3000);
+                });
+            }
+
+            // اطمینان از آیکون‌ها پس از لود
+            setTimeout(() => { lucide.createIcons(); }, 20);
+        })();
+    </script>
+    <script>
+        window.addEventListener('load', function () {
+            lucide.createIcons();
+        });
+    </script>
+</body>
+
+</html>
